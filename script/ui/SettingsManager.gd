@@ -5,6 +5,8 @@ extends Node
 
 # 设置变化信号
 signal settings_changed(new_settings)
+# 初始化完成信号
+signal initialization_completed()
 
 # 设置文件路径
 const CONFIG_FILE = "user://settings.cfg"
@@ -32,7 +34,47 @@ var _api_config_loaded: bool = false
 func _ready():
 	_load_api_config()
 	load_settings()
+	# 异步初始化Ollama模型列表
+	_initialize_ollama_models()
 	print("[SettingsManager] 设置管理器已初始化")
+
+# 异步初始化Ollama模型列表
+func _initialize_ollama_models():
+	if current_settings.api_type == "Ollama":
+		print("[SettingsManager] 检测到使用Ollama，正在获取本地模型列表...")
+		APIConfig.get_models_for_api_async("Ollama", func(models: Array[String]):
+			if models.size() > 0:
+				var updated = false
+
+				# 检查全局设置的模型是否存在
+				if not models.has(current_settings.model):
+					print("[SettingsManager] 当前模型 %s 不存在，切换到 %s" % [current_settings.model, models[0]])
+					current_settings.model = models[0]
+					updated = true
+
+				# 检查所有角色独立设置的模型是否存在
+				for character_name in character_ai_settings.keys():
+					var char_settings = character_ai_settings[character_name]
+					if char_settings.has("api_type") and char_settings.api_type == "Ollama":
+						if char_settings.has("model") and not models.has(char_settings.model):
+							print("[SettingsManager] 角色 %s 的模型 %s 不存在，切换到 %s" % [character_name, char_settings.model, models[0]])
+							char_settings.model = models[0]
+							updated = true
+
+				if updated:
+					save_settings()
+					settings_changed.emit(current_settings.duplicate())
+
+				print("[SettingsManager] Ollama模型列表已更新：", models)
+			else:
+				print("[SettingsManager] 获取Ollama模型失败，使用硬编码列表")
+
+			# 发出初始化完成信号
+			initialization_completed.emit()
+		)
+	else:
+		# 非Ollama API，直接发出初始化完成信号
+		initialization_completed.emit()
 
 # 加载API配置
 func _load_api_config():
@@ -58,6 +100,11 @@ func get_models_for_api(api_type: String) -> Array:
 	_load_api_config()
 	return APIConfig.get_models_for_api(api_type)
 
+# 异步获取指定API类型的模型列表（支持Ollama动态获取）
+func get_models_for_api_async(api_type: String, callback: Callable):
+	_load_api_config()
+	APIConfig.get_models_for_api_async(api_type, callback)
+
 # 获取可用模型列表（为了兼容性）
 func get_available_models(api_type: String) -> Array:
 	return get_models_for_api(api_type)
@@ -71,7 +118,7 @@ func save_settings():
 		print("[SettingsManager] 设置已保存到文件")
 	else:
 		print("[SettingsManager错误] 无法打开配置文件进行写入：", CONFIG_FILE)
-	
+
 	# 保存角色AI设置
 	save_character_ai_settings()
 
@@ -82,7 +129,7 @@ func load_settings():
 		if file:
 			var content = file.get_as_text()
 			file.close()
-			
+
 			if content.strip_edges() != "":
 				var data = JSON.parse_string(content)
 				if data:
@@ -96,7 +143,7 @@ func load_settings():
 			print("[SettingsManager错误] 无法打开配置文件进行读取：", CONFIG_FILE)
 	else:
 		print("[SettingsManager] 配置文件不存在，使用默认设置")
-	
+
 	# 加载角色AI设置
 	load_character_ai_settings()
 	# 应用显示设置
@@ -149,7 +196,7 @@ func load_character_ai_settings():
 		if file:
 			var content = file.get_as_text()
 			file.close()
-			
+
 			if content.strip_edges() != "":
 				var data = JSON.parse_string(content)
 				if data:

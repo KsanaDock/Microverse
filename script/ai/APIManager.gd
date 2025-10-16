@@ -21,14 +21,25 @@ func _enter_tree():
 	# 设置单例实例
 	if instance == null:
 		instance = self
-	
+
 	add_to_group("api_manager")
 
 # 在_ready中连接设置管理器
 func _ready():
 	# 连接设置变化信号
 	SettingsManager.settings_changed.connect(_on_settings_changed)
-	# 获取当前设置
+	SettingsManager.initialization_completed.connect(_on_settings_initialized)
+
+	# 检查SettingsManager是否已经初始化完成
+	if SettingsManager.has_signal("initialization_completed"):
+		# 等待初始化完成
+		print("[APIManager] 等待SettingsManager初始化完成...")
+	else:
+		# 立即获取设置（向后兼容）
+		_on_settings_initialized()
+
+# SettingsManager初始化完成回调
+func _on_settings_initialized():
 	current_settings = SettingsManager.get_settings()
 	print("[APIManager] 已连接设置管理器，当前设置 - API类型：", current_settings.api_type, "，模型：", current_settings.model)
 
@@ -43,18 +54,18 @@ func generate_dialog(prompt: String, character_name: String = "") -> HTTPRequest
 	if not is_inside_tree():
 		push_error("APIManager is not properly initialized!")
 		return null
-	
+
 	# 等待三帧以确保完全初始化
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
-	
+
 	# 创建新的HTTPRequest节点，不清理之前的节点
 	var http_request = HTTPRequest.new()
 	# 为每个请求设置唯一名称
 	http_request.name = "HTTPRequest_" + str(Time.get_unix_time_from_system()) + "_" + str(randi())
 	add_child(http_request)
-	
+
 	# 设置请求完成后自动清理
 	http_request.request_completed.connect(func(result, response_code, headers, body):
 		# 延迟清理，确保回调函数执行完毕
@@ -71,14 +82,14 @@ func generate_dialog(prompt: String, character_name: String = "") -> HTTPRequest
 		print("[APIManager] 为角色 ", character_name, " 使用AI设置 - API类型：", ai_settings.api_type, "，模型：", ai_settings.model)
 	else:
 		print("[APIManager] 使用默认AI设置 - API类型：", ai_settings.api_type, "，模型：", ai_settings.model)
-	
+
 	# 使用APIConfig构建请求
 	var headers = APIConfig.build_headers(ai_settings.api_type, ai_settings.api_key)
 	var data = JSON.stringify(APIConfig.build_request_data(ai_settings.api_type, ai_settings.model, prompt))
 	var url = APIConfig.get_url(ai_settings.api_type, ai_settings.model)
-	
+
 	print("[APIManager] 发送请求到 ", ai_settings.api_type, " API，模型：", ai_settings.model)
-	
+
 	print("[APIManager] 请求URL：", url)
 	print("[APIManager] 创建HTTPRequest节点：", http_request.name)
 	http_request.request(url, headers, HTTPClient.METHOD_POST, data)

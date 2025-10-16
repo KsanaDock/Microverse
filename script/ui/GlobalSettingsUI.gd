@@ -21,17 +21,17 @@ var current_settings = {}
 
 func _ready():
 	hide_settings()
-	
+
 	# 初始化API类型选项
 	for type in SettingsManager.api_types:
 		api_type_option.add_item(type)
-	
+
 	# 连接设置管理器
 	SettingsManager.settings_changed.connect(_on_settings_changed)
 	current_settings = SettingsManager.get_settings()
 	update_ui()
 	print("[GlobalSettingsUI] 已连接设置管理器")
-	
+
 	# 连接信号
 	api_type_option.item_selected.connect(_on_api_type_selected)
 	save_button.pressed.connect(_on_save_pressed)
@@ -41,7 +41,7 @@ func _ready():
 	quit_button.pressed.connect(_on_quit_pressed)
 	window_mode_option.item_selected.connect(_on_window_mode_selected)
 	resolution_option.item_selected.connect(_on_resolution_selected)
-	
+
 	# 设置为单例，确保在场景转换时不被销毁
 	set_process_input(true)
 
@@ -64,24 +64,16 @@ func update_ui():
 	var api_index = SettingsManager.api_types.find(current_settings.api_type)
 	if api_index >= 0:
 		api_type_option.selected = api_index
-	
-	# 更新模型选项
-	model_option.clear()
-	var models = SettingsManager.get_models_for_api(current_settings.api_type)
-	for model in models:
-		model_option.add_item(model)
-	
-	# 选择当前模型
-	var model_index = models.find(current_settings.model)
-	if model_index >= 0:
-		model_option.select(model_index)
-	
+
+	# 异步更新模型选项
+	_update_model_options()
+
 	# 设置API Key
 	api_key_input.text = current_settings.api_key
-	
+
 	# 设置AI标签显示复选框
 	ai_label_checkbox.button_pressed = current_settings.get("show_ai_model_label", true)
-	
+
 	# 根据API类型显示/隐藏API Key输入框
 	api_key_input.get_parent().visible = current_settings.api_type != "Ollama"
 
@@ -89,13 +81,44 @@ func update_ui():
 	_init_display_options()
 	_sync_display_options()
 
+# 异步更新模型选项
+func _update_model_options():
+	model_option.clear()
+	model_option.add_item("加载中...")
+	model_option.disabled = true
+
+	SettingsManager.get_models_for_api_async(current_settings.api_type, func(models: Array[String]):
+		# 获取最新的设置，确保使用最新的模型信息
+		current_settings = SettingsManager.get_settings()
+
+		model_option.clear()
+		model_option.disabled = false
+
+		for model in models:
+			model_option.add_item(model)
+
+		# 选择当前模型
+		var model_index = models.find(current_settings.model)
+		if model_index >= 0:
+			model_option.select(model_index)
+		elif models.size() > 0:
+			# 如果当前模型不存在，选择第一个可用模型
+			model_option.select(0)
+			current_settings.model = models[0]
+
+		print("[GlobalSettingsUI] 模型选项已更新，当前模型：", current_settings.model)
+	)
+
 # API类型选择回调
 func _on_api_type_selected(index):
 	current_settings.api_type = SettingsManager.api_types[index]
-	# 重置模型选择
-	var models = SettingsManager.get_models_for_api(current_settings.api_type)
-	current_settings.model = models[0]
-	update_ui()
+
+	# 异步获取新API类型的模型并重置选择
+	SettingsManager.get_models_for_api_async(current_settings.api_type, func(models: Array[String]):
+		if models.size() > 0:
+			current_settings.model = models[0]
+		update_ui()
+	)
 
 # 初始化窗口模式与分辨率选项
 func _init_display_options():
@@ -153,10 +176,10 @@ func _on_save_pressed():
 	current_settings.model = model_option.get_item_text(model_option.selected)
 	if current_settings.api_type != "Ollama":
 		current_settings.api_key = api_key_input.text
-	
+
 	# 保存AI标签显示设置
 	current_settings.show_ai_model_label = ai_label_checkbox.button_pressed
-	
+
 	# 通过SettingsManager更新设置
 	SettingsManager.update_settings(current_settings)
 	hide_settings()
