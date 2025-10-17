@@ -11,6 +11,7 @@ enum APIType {
 	DOUBAO,
 	GEMINI,
 	CLAUDE,
+	SILICONFLOW,
 	KIMI,
 	OPENAI_COMPATIBLE  # 新增：OpenAI兼容API枚举
 }
@@ -123,6 +124,19 @@ static func _initialize():
 		"KIMI (月之暗面)",
 		"https://api.moonshot.cn/v1/chat/completions",
 		["moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k"],
+		true,
+		{"Content-Type": "application/json", "Authorization": "Bearer {api_key}"},
+		"openai",
+		"openai"
+	)
+
+
+	# 硅基流动配置
+	_providers["SiliconFlow"] = APIProvider.new(
+		"SiliconFlow",
+		"硅基流动",
+		"https://api.siliconflow.cn/v1/chat/completions",
+		["deepseek-ai/DeepSeek-V3.1-Terminus", "inclusionAI/Ring-1T", "zai-org/GLM-4.6"],
 		true,
 		{"Content-Type": "application/json", "Authorization": "Bearer {api_key}"},
 		"openai",
