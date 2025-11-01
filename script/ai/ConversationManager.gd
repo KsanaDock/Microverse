@@ -139,7 +139,19 @@ func build_dialog_prompt(speaker_personality: Dictionary, listener_personality: 
 		speaker_personality["personality"],
 		speaker_personality["speaking_style"]
 	]
-	
+
+	# ====== ExplORA 新增：注入五维属性描述（简化版，用于对话） ======
+	prompt += "\n\n=== 你的五维属性特质 ===\n"
+	prompt += AttributeManager.get_all_descriptions()
+	prompt += "\n================================\n"
+	# ================================================================
+
+	# ====== ExplORA 新增：注入用户提示词 ======
+	var user_prompts_text = PromptManager.get_prompts_text_for_agent()
+	if user_prompts_text != "":
+		prompt += "\n" + user_prompts_text
+	# =========================================
+
 	# 添加故事背景和社会规则
 	if not background_prompt.is_empty():
 		prompt += "\n\n" + background_prompt
