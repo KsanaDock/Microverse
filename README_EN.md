@@ -236,6 +236,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Thanks to the open-source community
 - Art Assets: [LimeZu](https://limezu.itch.io/) - Special thanks to this talented artist for providing beautiful game assets
 
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
+
 ## 📞 Contact
 
 <div align="center">

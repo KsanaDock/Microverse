@@ -205,6 +205,8 @@ office/
 - 各AI服务提供商
 - 开源社区的贡献者们
 - 美术素材来源: [LimeZu](https://limezu.itch.io/) - 感谢这位优秀艺术家提供的精美游戏素材
+- dartnode赠送的服务器
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
 
 ## 📞 联系方式
 
