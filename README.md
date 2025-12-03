@@ -208,6 +208,10 @@ office/
 - dartnode赠送的服务器
 [![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=KsanaDock/Microverse&type=date&legend=top-left)](https://www.star-history.com/#KsanaDock/Microverse&type=date&legend=top-left)
+
 ## 📞 联系方式
 
 <div align="center">
