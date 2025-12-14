@@ -521,7 +521,19 @@ func make_decision():
 		personality["work_duties"],
 		personality["work_habits"]
 	]
-	
+
+	# ====== ExplORA 新增：注入五维属性描述 ======
+	prompt += "\n\n=== 你的五维属性特质 ===\n"
+	prompt += AttributeManager.get_all_descriptions()
+	prompt += "\n================================\n"
+	# ==========================================
+
+	# ====== ExplORA 新增：注入用户提示词 ======
+	var user_prompts_text = PromptManager.get_prompts_text_for_agent()
+	if user_prompts_text != "":
+		prompt += "\n" + user_prompts_text
+	# =========================================
+
 	# 添加公司基本信息和员工名单信息
 	prompt += get_company_basic_info()
 	prompt += get_company_employees_info()
