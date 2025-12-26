@@ -2,21 +2,15 @@
 
 **中文** | [English](README_EN.md)
 
-## 🎮 Steam版本即将上线
-
 <div align="center">
 
-![Microverse In Box 盒中小世界](asset/pics/Cover.png)
+[![KsanaDock](asset/pics/KsanaDock.png)](https://www.ksanadock.com)
 
-**《Microverse In Box 盒中小世界》即将登陆Steam平台！**
+**KsanaDock | 时空码头**
 
-[![Steam](https://img.shields.io/badge/Steam-000000?style=for-the-badge&logo=steam&logoColor=white)](https://store.steampowered.com/app/3902630/Microverse_In_Box/)
+帮助你轻松 DIY 自己版本的 Microverse，生成独特的 AI 世界和角色。
 
-[🎯 **添加到Steam愿望单**](https://store.steampowered.com/app/3902630/Microverse_In_Box/) | [📖 **查看Steam页面**](https://store.steampowered.com/app/3902630/Microverse_In_Box/)
-
----
-
-**📝 关于本开源项目**: 本仓库开源的是《Microverse In Box》游戏在2025年6月的初版Demo，为开发者和爱好者提供学习和参考。完整版游戏将在Steam平台发布，包含更多功能、优化和内容。
+[点击访问 www.ksanadock.com](https://www.ksanadock.com)
 
 </div>
 
@@ -184,6 +178,24 @@ office/
 - 创建新的场景地图
 - 集成新的AI服务提供商
 - 扩展对话功能
+
+## 🎮 Steam版本即将上线
+
+<div align="center">
+
+![Microverse In Box 盒中小世界](asset/pics/Cover.png)
+
+**《Microverse In Box 盒中小世界》即将登陆Steam平台！**
+
+[![Steam](https://img.shields.io/badge/Steam-000000?style=for-the-badge&logo=steam&logoColor=white)](https://store.steampowered.com/app/3902630/Microverse_In_Box/)
+
+[🎯 **添加到Steam愿望单**](https://store.steampowered.com/app/3902630/Microverse_In_Box/) | [📖 **查看Steam页面**](https://store.steampowered.com/app/3902630/Microverse_In_Box/)
+
+---
+
+**📝 关于本开源项目**: 本仓库开源的是《Microverse In Box》游戏在2025年6月的初版Demo，为开发者和爱好者提供学习和参考。完整版游戏将在Steam平台发布，包含更多功能、优化和内容。
+
+</div>
 
 ## 🤝 贡献指南
 

@@ -2,21 +2,15 @@
 
 [中文](README.md) | **English**
 
-## 🎮 Coming Soon to Steam
-
 <div align="center">
 
-![Microverse In Box](asset/pics/Cover.png)
+[![KsanaDock](asset/pics/KsanaDock.png)](https://www.ksanadock.com)
 
-**Microverse In Box is coming to Steam!**
+**KsanaDock | Time Space Dock**
 
-[![Steam](https://img.shields.io/badge/Steam-000000?style=for-the-badge&logo=steam&logoColor=white)](https://store.steampowered.com/app/3902630/Microverse_In_Box/)
+Create Your Microverse. Generate unique AI world and characters.
 
-[🎯 **Add to Steam Wishlist**](https://store.steampowered.com/app/3902630/Microverse_In_Box/) | [📖 **View Steam Page**](https://store.steampowered.com/app/3902630/Microverse_In_Box/)
-
----
-
-**📝 About This Open Source Project**: This repository contains the open-source version of the initial demo of "Microverse In Box" from June 2025, provided for developers and enthusiasts to learn and reference. The complete version will be released on Steam with more features, optimizations, and content.
+[Visit www.ksanadock.com](https://www.ksanadock.com)
 
 </div>
 
@@ -206,6 +200,24 @@ microverse/
 3. Open the project in Godot
 4. Configure your API keys
 5. Run the project (F5)
+
+## 🎮 Coming Soon to Steam
+
+<div align="center">
+
+![Microverse In Box](asset/pics/Cover.png)
+
+**Microverse In Box is coming to Steam!**
+
+[![Steam](https://img.shields.io/badge/Steam-000000?style=for-the-badge&logo=steam&logoColor=white)](https://store.steampowered.com/app/3902630/Microverse_In_Box/)
+
+[🎯 **Add to Steam Wishlist**](https://store.steampowered.com/app/3902630/Microverse_In_Box/) | [📖 **View Steam Page**](https://store.steampowered.com/app/3902630/Microverse_In_Box/)
+
+---
+
+**📝 About This Open Source Project**: This repository contains the open-source version of the initial demo of "Microverse In Box" from June 2025, provided for developers and enthusiasts to learn and reference. The complete version will be released on Steam with more features, optimizations, and content.
+
+</div>
 
 ## 🤝 Contributing
 
