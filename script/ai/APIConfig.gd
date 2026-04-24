@@ -75,7 +75,7 @@ static func _initialize():
 		"DeepSeek",
 		"DeepSeek",
 		"https://api.deepseek.com/v1/chat/completions",
-		["deepseek-chat"],
+		["deepseek-chat", "deepseek-v4-flash", "deepseek-v4-pro", "deepseek-reasoner"],
 		true,
 		{"Content-Type": "application/json", "Authorization": "Bearer {api_key}"},
 		"openai",
